@@ -24,17 +24,14 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="org.example.coffeebreakplugin.CoffeeBreakStartupActivity"/>
-    </extensions>
 
-    <extensions defaultExtensionNs="com.intellij">
         <notificationGroup
                 id="CoffeeBreak"
                 displayType="BALLOON"
                 isLogByDefault="true"/>
-    </extensions>
 
-    <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable
+                parentId="tools"
                 instance="org.example.coffeebreakplugin.CoffeeBreakConfigurable"
                 displayName="Coffee Break Plugin"/>
     </extensions>
