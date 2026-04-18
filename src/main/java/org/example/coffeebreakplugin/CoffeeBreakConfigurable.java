@@ -6,9 +6,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
+/**
+ * Provides a configuration UI for the Coffee Break Plugin.
+ *
+ * This class implements IntelliJ's {@link Configurable} interface, enabling the creation
+ * of a settings panel where users can input and manage their API key for the plugin.
+ */
 public class CoffeeBreakConfigurable implements Configurable {
 
-    private JPanel panel;       // Holds all components
+    private JPanel panel;
     private JTextField apiKeyField; // Input field for the API key
 
     @Override

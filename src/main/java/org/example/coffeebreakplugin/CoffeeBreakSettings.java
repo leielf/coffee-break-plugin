@@ -9,6 +9,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Stores and manages persistent settings for the Coffee Break plugin.
+ *
+ * This class allows saving and retrieving plugin configurations, such as the API key,
+ * using IntelliJ's PersistentStateComponent framework. It also includes helper methods
+ * for retrieving available models using external commands.
+ */
+
 @Service
 @State(
         name = "CoffeeBreakSettings",
@@ -16,6 +24,10 @@ import java.io.InputStreamReader;
 )
 public final class CoffeeBreakSettings implements PersistentStateComponent<CoffeeBreakSettings.State> {
 
+    /**
+     * Represents the state that is persisted for CoffeeBreakSettings.
+     * Currently, it includes a single field for storing the API key.
+     */
     public static class State {
         public String apiKey = "";
     }
@@ -51,18 +63,18 @@ public final class CoffeeBreakSettings implements PersistentStateComponent<Coffe
                 boolean skipHeader = true; // Skip the first line (headers)
 
                 while ((line = reader.readLine()) != null) {
-                    // Skip the header line (NAME ID SIZE MODIFIED)
+                    // Skip the header line
                     if (skipHeader) {
                         skipHeader = false;
                         continue;
                     }
 
-                    // Assuming each subsequent line contains a model, return the first non-empty line
+                    // Return the first non-empty line
                     if (!line.isBlank()) {
                         // Extract the model name by splitting and trimming the line
                         String[] parts = line.trim().split("\\s+");
                         if (parts.length > 0) {
-                            return parts[0]; // Return the "NAME" column of the first model
+                            return parts[0];
                         }
                     }
                 }
@@ -70,6 +82,6 @@ public final class CoffeeBreakSettings implements PersistentStateComponent<Coffe
         } catch (IOException e) {
             System.out.println("Error while executing 'ollama list': " + e.getMessage());
         }
-        return ""; // Return an empty string if no models are found or an error occurs
+        return "";
     }
 }

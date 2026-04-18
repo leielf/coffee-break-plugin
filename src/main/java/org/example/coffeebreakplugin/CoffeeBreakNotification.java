@@ -1,12 +1,14 @@
 package org.example.coffeebreakplugin;
 
 import com.intellij.notification.*;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
-import com.intellij.ide.BrowserUtil;
-import org.jetbrains.annotations.NotNull;
 
+/**
+ * Handles displaying notifications for the Coffee Break plugin.
+ *
+ * This class creates and displays notifications using IntelliJ's notification system,
+ * informing the user about the need for a coffee break.
+ */
 public class CoffeeBreakNotification {
 
     public static void show(Project project, String message) {
@@ -23,9 +25,5 @@ public class CoffeeBreakNotification {
                 );
 
         Notifications.Bus.notify(notification, project);
-    }
-
-    private static void openCoffeeBreak() {
-        BrowserUtil.browse("https://en.wikipedia.org/wiki/Special:Random");
     }
 }
