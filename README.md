@@ -29,6 +29,13 @@
 3. **Custom AI Messages**:
    - Uses either the **first available model from Ollama** or the Hugging Face API to generate fun, creative break messages. 
    - If neither service is available, it falls back to a default static message.
+     Examples (minutes threshold was set to 1 for testing purposes):
+     <img width="382" height="159" alt="hugging face response" src="https://github.com/user-attachments/assets/1dc3eb31-d8f1-48e2-a527-5d88e2e5dbc7" />
+     <img width="405" height="149" alt="hugging face response 2" src="https://github.com/user-attachments/assets/38763a6f-086c-4249-a347-d45114d83601" />
+     <img width="396" height="148" alt="Screenshot 2026-04-18 at 10 57 32" src="https://github.com/user-attachments/assets/464f2f45-418b-47fb-a84d-169c420ed0b2" />
+     <img width="382" height="144" alt="Screenshot 2026-04-18 at 11 05 43" src="https://github.com/user-attachments/assets/95385792-7f51-4be5-97ba-1439c88c544f" />
+     <img width="404" height="180" alt="Screenshot 2026-04-18 at 12 27 28" src="https://github.com/user-attachments/assets/7bb7eab0-24f5-4e10-9b97-1d449a5bfd61" />
+
      
 ---
 
