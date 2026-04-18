@@ -12,12 +12,13 @@ import java.util.Map;
 
 public class AIClient {
 
+    private static final String defaultResponse = "☕ Take a short break! Go and grab a cuppa coffee, do 10 squats or a moonwalk to stretch it out!";
+
     public static String getBreakMessage(int edits, long minutes) {
-        CoffeeBreakSettings settings = CoffeeBreakSettings.getInstance();
         // Get the API key from the settings
         String apiKey = SecureStorage.getApiKey();
 //        String apiKey = settings.getState().apiKey;
-        String ollamaModel = settings.getFirstAvailableModel();
+        String ollamaModel = CoffeeBreakSettings.getFirstAvailableModel();
         boolean isOllama = true;
         String model = ollamaModel;
         // Check if API key is present
@@ -34,7 +35,8 @@ public class AIClient {
                 - minutes coding: %d
                 - edits: %d
 
-                Generate a short, extremely fun coffee break message (maximum 1 sentence). A punch line is essential! Also add a suggestion like 'do 10 squats', 'do a moonwalk', etc. 
+                Generate a short, extremely fun coffee break message (maximum 1 sentence).
+                A punch line is essential! Also add a suggestion like 'do 10 squats', 'do a moonwalk', etc.
                 """.formatted(minutes, edits);
         if(isOllama){
             System.out.println("trying Ollama, model: " + model);
@@ -59,10 +61,14 @@ public class AIClient {
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
-            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> response;
+            try (HttpClient client = HttpClient.newHttpClient()) {
 
-            HttpResponse<String> response =
-                    client.send(request, HttpResponse.BodyHandlers.ofString());
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            }catch (Exception e) {
+                e.printStackTrace();
+                return defaultResponse;
+            }
 
             System.out.println("OLLAMA RAW RESPONSE:");
             System.out.println(response.body());
@@ -80,7 +86,7 @@ public class AIClient {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Take a short break! Go and grab a cuppa coffee, do 10 squats or a moonwalk to stretch it out!";
+            return defaultResponse;
         }
     }
 
@@ -100,18 +106,23 @@ public class AIClient {
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
-            HttpResponse<String> response =
-                    HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response;
+            try (HttpClient client = HttpClient.newHttpClient()) {
+
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            }catch (Exception e) {
+                e.printStackTrace();
+                return defaultResponse;
+            }
 
             System.out.println("HF RAW: " + response.body());
 
             JsonNode root = mapper.readTree(response.body());
             return root.get("choices").get(0).get("message").get("content").asText().replaceAll("^\"|\"$", "");
 
-
         } catch (Exception e) {
             e.printStackTrace();
-            return "☕ Take a break!";
+            return defaultResponse;
         }
     }
 }
