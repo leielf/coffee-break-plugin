@@ -25,7 +25,7 @@ public class CoffeeBreakTimer {
                     );
 
                     CoffeeBreakNotification.show(project, message);
-                    timer.cancel();
+                    ActivityTracker.reset();
                 }
             }
         }, 0, 1000);
