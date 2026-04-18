@@ -10,14 +10,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Provides AI-based logic for generating coffee break messages.
+ *
+ * This class integrates with two APIs (Ollama and Hugging Face) to request dynamic and personalized
+ * coffee break suggestions based on user activity. If the APIs are unavailable, a default message is returned.
+ */
 public class AIClient {
 
     private static final String defaultResponse = "☕ Take a short break! Go and grab a cuppa coffee, do 10 squats or a moonwalk to stretch it out!";
 
+    /**
+     * Generates a break message based on user activity.
+     *
+     * Depending on whether an Ollama model or Hugging Face API key is available, it determines which service
+     * to use for generating the message. Falls back to a default response when both fail.
+     *
+     * @param edits   The number of document edits the user has made.
+     * @param minutes The number of minutes since the last break.
+     * @return A personalized, fun coffee break message.
+     */
     public static String getBreakMessage(int edits, long minutes) {
         // Get the API key from the settings
         String apiKey = SecureStorage.getApiKey();
-//        String apiKey = settings.getState().apiKey;
         String ollamaModel = CoffeeBreakSettings.getFirstAvailableModel();
         boolean isOllama = true;
         String model = ollamaModel;
@@ -46,6 +61,13 @@ public class AIClient {
         return getHuggingFaceResponse(apiKey, prompt);
     }
 
+    /**
+     * Sends a prompt to the Ollama local AI model and retrieves a response.
+     *
+     * @param prompt   The text prompt describing the context of the request.
+     * @param ollama   The name of the local Ollama model to use.
+     * @return The generated response from the Ollama model, or a default message on failure.
+     */
     private static String getOllamaResponse(String prompt, String ollama){
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -90,6 +112,13 @@ public class AIClient {
         }
     }
 
+    /**
+     * Sends a prompt to Hugging Face's remote API and retrieves a response.
+     *
+     * @param apiKey The API key for accessing Hugging Face services.
+     * @param prompt The text prompt describing the context of the request.
+     * @return The generated response from Hugging Face, or a default message on failure.
+     */
     public static String getHuggingFaceResponse(String apiKey, String prompt) {
         try {
             ObjectMapper mapper = new ObjectMapper();
